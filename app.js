@@ -2,13 +2,14 @@ var express = require('express'),
     app = express();
     
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + "/public"));
     
 app.get('/', function(req, res){
-    res.render('landing', {"title": "Simple Games"});
+    res.render('landing', {"title": "Simple Games", "style": ""});
 });
 
 app.get('/tictactoe', function(req, res) {
-   res.render('tictactoe', {"title": "Tic Tac Toe"});
+  res.render('tictactoe', {"title": "Tic Tac Toe", "style": "tictactoe"});
 });
 
 

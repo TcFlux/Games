@@ -23,9 +23,20 @@
 
 <h1>It's Player <span id="playerId"> 1 </span>'s Turn!</h1>
 
+<button id="reset">Reset</button>
+
+
+
+
+
+
+
+
 <script>
     var squares = document.querySelectorAll("td");
     var playerId = document.getElementById("playerId");
+    var resetButton = document.getElementById("reset");
+    
     setUpSquares();
     
     var turn = 1;
@@ -47,6 +58,17 @@
         this.removeEventListener('click', colorChange);
         playerId.textContent = turn;
     }
+    
+    function reset(){
+        turn = 1;
+        playerId.textContent = turn;
+        for(let i = 0; i < squares.length; i++){
+            squares[i].classList.remove("player1", "player2");
+        }
+        setUpSquares();
+    }
+    
+    resetButton.addEventListener('click', reset)
 
 </script>
 

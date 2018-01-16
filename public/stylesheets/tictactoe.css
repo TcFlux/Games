@@ -32,9 +32,13 @@ tr:nth-of-type(2) td {
 }
 
 .player1 {
-    background-color: red;
+    background-image: url(http://www.andreaformann.com/images/close.png);
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .player2 {
-    background-color: green;
+    background-image: url(http://jimdscott.com/static/images/tic-tac-toe-O.png);
+    background-size: contain;
+    background-repeat: no-repeat;
 }

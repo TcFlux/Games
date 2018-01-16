@@ -21,7 +21,7 @@
     </tr>
 </table>
 
-<h1>It's Player <span id="playerId"> 1 </span>'s Turn!</h1>
+<h1 id="statusLine">It's Player 1's Turn!</h1>
 
 <button id="reset">Reset</button>
 
@@ -30,16 +30,23 @@
 
 
 
-
+<!--init function is just the reset function. Is there a point to having it?-->
+<!--Lot's of static text, maybe try and set up a cleaner way?-->
+<!--Be careful with the gameEnd function and how it interacts with the player turns after the final click event-->
 
 <script>
     var squares = document.querySelectorAll("td");
-    var playerId = document.getElementById("playerId");
+    var playerOneTurn = true;
+    var statusLine = document.getElementById("statusLine");
     var resetButton = document.getElementById("reset");
+    var vBoard = [[0, 0, 0],[0, 0, 0],[0, 0, 0]];
     
-    setUpSquares();
+    init();
     
-    var turn = 1;
+    function init(){
+        reset();
+    }
+    
     
     function setUpSquares(){
         for(let i = 0; i < squares.length; i++){
@@ -48,20 +55,68 @@
     }
     
     function colorChange(){
-        if(turn === 1) {
+        if(playerOneTurn) {
             this.classList.add("player1");
-            turn = 2;
+            statusLine.textContent = "It's Player 2's Turn!"
         } else {
             this.classList.add("player2");
-            turn = 1;
+            statusLine.textContent = "It's Player 1's Turn!"
         }
         this.removeEventListener('click', colorChange);
-        playerId.textContent = turn;
+        playerOneTurn = !playerOneTurn;
     }
+    
+    function checkWin(){
+        checkRows();
+        checkColumns();
+        checkDiagonals();
+    }
+    
+    function checkRows(){
+        for(let a = 0; a < 3; a++){
+            if((vBoard[a][0] === 1 && vBoard[a][1] === 1 && vBoard[a][2] === 1) || (vBoard[a][0] === 2 && vBoard[a][1] === 2 && vBoard[a][2] === 2)){
+                console.log("game over");
+                gameEnd();
+            }
+        }
+    }
+    
+    function checkColumns(){
+        for(let b = 0; b < 3; b++){
+            if((vBoard[0][b] === 1 && vBoard[1][b] === 1 && vBoard[2][b] === 1) || (vBoard[0][b] === 2 && vBoard[1][b] === 2 && vBoard[2][b] === 2)){
+                console.log("game over");
+                gameEnd();
+            }
+        }
+    }
+    
+    function checkDiagonals(){
+        if(((vBoard[0][0] === 1 && vBoard[1][1] === 1 && vBoard[2][2] === 1) || (vBoard[0][0] === 2 && vBoard[1][1] === 2 && vBoard[2][2] === 2))){
+            console.log("game over");
+            gameEnd();
+        }
+        if(((vBoard[0][2] === 1 && vBoard[1][1] === 1 && vBoard[2][0] === 1) || (vBoard[0][2] === 2 && vBoard[1][1] === 2 && vBoard[2][0] === 2))){
+            console.log("game over");
+            gameEnd();
+        }
+    }
+    
+    function gameEnd(){
+        for(let i = 0; i < squares.length; i++){
+            squares[i].removeEventListener('click', colorChange);
+        }
+        if(playerOneTurn){
+            statusLine.textContent = "Player 1 is the winner!";
+        } else {
+            statusLine.textContent = "Player 2 is the winner!";
+        }
+    }
+    
     
     function reset(){
         turn = 1;
-        playerId.textContent = turn;
+        playerOneTurn = true;
+        statusLine.textContent = "It's Player 1's Turn!"
         for(let i = 0; i < squares.length; i++){
             squares[i].classList.remove("player1", "player2");
         }

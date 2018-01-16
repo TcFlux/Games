@@ -21,5 +21,35 @@
     </tr>
 </table>
 
+<h1>It's Player <span id="playerId"> 1 </span>'s Turn!</h1>
+
+<script>
+    var squares = document.querySelectorAll("td");
+    var playerId = document.getElementById("playerId");
+    setUpSquares();
+    
+    var turn = 1;
+    
+    function setUpSquares(){
+        for(let i = 0; i < squares.length; i++){
+            squares[i].addEventListener('click', colorChange);
+        }
+    }
+    
+    function colorChange(){
+        if(turn === 1) {
+            alert("Click!");
+            this.classList.add("player1");
+            turn = 2;
+        } else {
+            alert("Click!");
+            this.classList.add("player2");
+            turn = 1;
+        }
+        this.removeEventListener('click', colorChange);
+        playerId.textContent = turn;
+    }
+
+</script>
 
 <% include ../partials/footer %>

@@ -5,19 +5,19 @@
 
 <table>
     <tr>
+        <td id="0">0</td>
         <td id="1">1</td>
         <td id="2">2</td>
-        <td id="3">3</td>
     </tr>
     <tr>
+        <td id="3">3</td>
         <td id="4">4</td>
         <td id="5">5</td>
-        <td id="6">6</td>
     </tr>
     <tr>
+        <td id="6">6</td>
         <td id="7">7</td>
         <td id="8">8</td>
-        <td id="9">9</td>
     </tr>
 </table>
 
@@ -33,6 +33,8 @@
 <!--init function is just the reset function. Is there a point to having it?-->
 <!--Lot's of static text, maybe try and set up a cleaner way?-->
 <!--Be careful with the gameEnd function and how it interacts with the player turns after the final click event-->
+<!--Please for the love of god refactor the board connect logic-->
+<!--Removing the event listeners in this current thing doesn't work due to the anon function to set up the vBoard-->
 
 <script>
     var squares = document.querySelectorAll("td");
@@ -50,19 +52,52 @@
     
     function setUpSquares(){
         for(let i = 0; i < squares.length; i++){
-            squares[i].addEventListener('click', colorChange);
+            // squares[i].addEventListener('click', colorChange);
+            //This function connects the game board with the virtual game board array
+            squares[i].addEventListener('click', function(){
+                var remainder = (i % 3);
+                console.log("remainder = " + remainder);
+                if(i < 3){
+                    if(playerOneTurn){
+                        vBoard[0][remainder] = 1;
+                        console.log(vBoard[0][remainder]);
+                    } else {
+                        vBoard[0][remainder] = 2;
+                        console.log(vBoard[0][remainder]);
+                    }
+                } else if(i < 6){
+                    if(playerOneTurn){
+                        vBoard[1][remainder] = 1;
+                        console.log(vBoard[1][remainder]);
+                    } else {
+                        vBoard[1][remainder] = 2;
+                        console.log(vBoard[1][remainder]);
+                    }
+                } else {
+                    if(playerOneTurn){
+                        vBoard[2][remainder] = 1;
+                        console.log(vBoard[2][remainder]);
+                    } else {
+                        vBoard[2][remainder] = 2;
+                        console.log(vBoard[2][remainder]);
+                    }
+                }
+                colorChange(squares[i]);
+                this.removeEventListener('click', arguments.callee);
+                checkWin();
+            });
         }
     }
     
-    function colorChange(){
+    function colorChange(square){
         if(playerOneTurn) {
-            this.classList.add("player1");
+            square.classList.add("player1");
             statusLine.textContent = "It's Player 2's Turn!"
         } else {
-            this.classList.add("player2");
+            square.classList.add("player2");
             statusLine.textContent = "It's Player 1's Turn!"
         }
-        this.removeEventListener('click', colorChange);
+        square.removeEventListener('click', colorChange);
         playerOneTurn = !playerOneTurn;
     }
     

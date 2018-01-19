@@ -54,9 +54,12 @@
     
     function setUpSquares(){
         for(let i = 0; i < squares.length; i++){
+            squares[i].clicked = false;
             //This function connects the game board with the virtual game board array
             squares[i].addEventListener('click', function(){
-                if(!gameOver){
+                console.log("click registered");
+                if(!gameOver && !squares[i].clicked){
+                    console.log("gameOver false")
                     var remainder = (i % 3);
                     if(i < 3){
                         if(playerOneTurn){
@@ -79,6 +82,7 @@
                     }
                     colorChange(squares[i]);
                     checkWin();
+                    squares[i].clicked = true;
                 }
             });
         }
@@ -133,15 +137,19 @@
     }
     
     function gameEnd(){
-        for(let i = 0; i < squares.length; i++){
-            squares[i].removeEventListener('click', colorChange);
-        }
+        // for(let i = 0; i < squares.length; i++){
+        //     squares[i].removeEventListener('click', colorChange);
+            
+        // }
         if(!playerOneTurn){
             statusLine.textContent = "Player 1 is the winner!";
         } else {
             statusLine.textContent = "Player 2 is the winner!";
         }
         gameOver = true;
+        for(let i = 0; i < squares.length; i++){
+            squares[i].clicked = true;
+        }
     }
     
     
@@ -153,7 +161,9 @@
         statusLine.textContent = "It's Player 1's Turn!"
         for(let i = 0; i < squares.length; i++){
             squares[i].classList.remove("player1", "player2");
+            squares[i].clicked = false;
         }
+        
     }
     
     resetButton.addEventListener('click', reset)

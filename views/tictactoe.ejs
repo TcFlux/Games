@@ -59,7 +59,8 @@
             squares[i].addEventListener('click', function(){
                 console.log("click registered");
                 if(!gameOver && !squares[i].clicked){
-                    console.log("gameOver false")
+                    console.log("gameOver and clicked conditional met");
+                    //grid is 3x3 so remainder is used to determine the horizontal position of the square in the grid for each row 
                     var remainder = (i % 3);
                     if(i < 3){
                         if(playerOneTurn){
@@ -83,6 +84,7 @@
                     colorChange(squares[i]);
                     checkWin();
                     squares[i].clicked = true;
+                    playerOneTurn = !playerOneTurn;
                 }
             });
         }
@@ -97,7 +99,7 @@
                 square.classList.add("player2");
                 statusLine.textContent = "It's Player 1's Turn!"
             }
-            playerOneTurn = !playerOneTurn;
+            // playerOneTurn = !playerOneTurn;
         }
     }
     
@@ -141,7 +143,7 @@
         //     squares[i].removeEventListener('click', colorChange);
             
         // }
-        if(!playerOneTurn){
+        if(playerOneTurn){
             statusLine.textContent = "Player 1 is the winner!";
         } else {
             statusLine.textContent = "Player 2 is the winner!";
